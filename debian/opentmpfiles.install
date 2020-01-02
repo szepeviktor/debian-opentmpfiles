@@ -1,0 +1,2 @@
+#! /usr/bin/dh-exec
+./tmpfiles.sh => /bin/opentmpfiles-tmpfiles

@@ -1,0 +1,20 @@
+Source: opentmpfiles
+Section: net
+Priority: optional
+Maintainer: Thomas Goirand <zigo@debian.org>
+Build-Depends:
+ debhelper-compat (= 12),
+ dh-exec,
+ openstack-pkg-tools (>= 99~),
+Standards-Version: 4.4.1
+Vcs-Browser: https://salsa.debian.org/debian/opentmpfiles
+Vcs-Git: https://salsa.debian.org/debian/opentmpfiles.git
+Homepage: https://github.com/OpenRC/opentmpfiles
+
+Package: opentmpfiles
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: standalone utility written to process systemd-style tmpfiles.d files
+ This is a standalone utility written to process systemd-style tmpfiles.d files
+ so that they can be handled on systems with or without systemd installed.

@@ -1,0 +1,5 @@
+opentmpfiles (0.2+2019.05.21.git.44a55796ba-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #947935)
+
+ -- Thomas Goirand <zigo@debian.org>  Tue, 31 Dec 2019 17:30:29 +0100

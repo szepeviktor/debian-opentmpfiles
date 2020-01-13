@@ -1,0 +1,47 @@
+#!/usr/bin/env /lib/init/init-d-script
+#
+### BEGIN INIT INFO
+# Provides:          opentmpfiles-clean
+# Required-Start:    $network $remote_fs $syslog
+# Required-Stop:     $network $remote_fs
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: temporary files and dir cleanup
+### END INIT INFO
+#
+NAME='opentmpfiles-clean'
+DESC='standalone tmpfiles cleanup service'
+DAEMON=/bin/opentmpfiles-tmpfiles
+
+do_start_cmd_override () {
+    install -d /run/opentmpfiles
+    $DAEMON  --clean
+    if [ "$?" = 0 ]; then
+        touch /run/opentmpfiles/clean
+        log_success_msg "Opentmpfiles: cleanup complete"
+    else
+        log_failure_msg "Opentmpfiles: cleanup failed"
+    fi
+}
+
+do_stop_cmd_override () {
+    $DAEMON  --clean
+    if [ "$?" = 0 ]; then
+        log_success_msg "Opentmpfiles: cleanup complete"
+    else
+        log_failure_msg "Opentmpfiles: cleanup failed"
+    fi
+}
+
+do_restart_override () {
+    #No-Op
+    log_success_msg "Opentmpfiles: nothing to do"
+}
+
+do_status_override () {
+    if [ -e /run/opentmpfiles/clean ]; then
+	log_success_msg "Opentmpfiles: clenup already done"
+    else
+        log_failure_msg "Opentmpfiles: clenup failed"
+    fi
+}

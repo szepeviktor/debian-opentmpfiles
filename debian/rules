@@ -11,3 +11,8 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	echo "Do nothing..."
+
+override_dh_installinit:
+	dh_installinit --name=opentmpfiles-clean --no-start
+	dh_installinit --name=opentmpfiles-setup --no-start
+	dh_installinit --name=opentmpfiles-setup-dev --no-start

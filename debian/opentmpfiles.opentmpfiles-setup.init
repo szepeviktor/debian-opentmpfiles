@@ -1,0 +1,44 @@
+#!/usr/bin/env /lib/init/init-d-script
+#
+### BEGIN INIT INFO
+# Provides:          opentmpfiles-setup
+# Required-Start:    $network $remote_fs $syslog opentmpfiles-clean
+# Required-Stop:     $network $remote_fs $syslog
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: create volatile files and directories
+### END INIT INFO
+#
+NAME='opentmpfiles-setup'
+DESC='standalone tmpfiles setup service'
+DAEMON=/bin/opentmpfiles-tmpfiles
+
+do_start_cmd_override () {
+    install -d /run/opentmpfiles
+    $DAEMON  --create --remove --boot --exclude-prefix=/dev
+    if [ "$?" = 0 ]; then
+        touch /run/opentmpfiles/setup
+        log_success_msg "Opentmpfiles: setup complete"
+    else
+        log_failure_msg "Opentmpfiles: setup failed"
+    fi
+}
+
+do_stop_cmd_override () {
+    #No-Op
+    log_success_msg "Opentmpfiles: nothing to do at shutdown"
+}
+
+do_restart_override () {
+    #No-Op
+    log_success_msg "Opentmpfiles: nothing to do"
+}
+
+do_status_override () {
+    if [ -e /run/opentmpfiles/setup ]; then
+	log_success_msg "Opentmpfiles: setup already done"
+    else
+        log_failure_msg "Opentmpfiles: setup failed"
+    fi
+}
+

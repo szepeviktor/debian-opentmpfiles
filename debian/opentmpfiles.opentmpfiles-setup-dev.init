@@ -1,0 +1,45 @@
+#!/usr/bin/env /lib/init/init-d-script
+#
+### BEGIN INIT INFO
+# Provides:          opentmpfiles-setup-dev
+# Required-Start:    mountkernfs
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:      0 1 6
+# X-Start-Before:    udev
+# X-Stop-After:       udev
+# Short-Description: tmpfiles static dev nodes setup
+### END INIT INFO
+#
+NAME='opentmpfiles-setup-dev'
+DESC='standalone dev nodes setup service'
+DAEMON=/bin/opentmpfiles-tmpfiles
+
+do_start_cmd_override () {
+    install -d /run/opentmpfiles
+    $DAEMON  --prefix=/dev --create --boot
+    if [ "$?" = 0 ]; then
+        touch /run/opentmpfiles/dev
+        log_success_msg "Opentmpfiles: device node setup done"
+    else
+        log_failure_msg "Opentmpfiles: device node setup failed"
+    fi
+}
+
+do_stop_cmd_override () {
+    #No-Op
+    log_success_msg "Opentmpfiles: nothing to do at shutdown"
+}
+
+do_restart_override () {
+    #No-Op
+    log_success_msg "Opentmpfiles: nothing to do"
+}
+
+do_status_override () {
+    if [ -e /run/opentmpfiles/dev ]; then
+	log_success_msg "Opentmpfiles: device node setup done"
+    else
+        log_failure_msg "Opentmpfiles: device node setup failed"
+    fi
+}

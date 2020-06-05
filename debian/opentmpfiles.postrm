@@ -2,8 +2,14 @@
 
 set -e
 
-if [ "$1" = "remove" ] || [ "$1" = "disappear" ] ; then
-	update-alternatives --remove tmpfiles /usr/bin/opentmpfiles-tmpfiles
+if [ "$1" = "remove" ] || [ "$1" = "abort-install" ] || [ "$1" = "disappear" ] ; then
+	dpkg-divert --package opentmpfiles --remove --rename \
+        --divert /bin/systemd-tmpfiles.real /bin/systemd-tmpfiles
+fi
+
+if [ "abort-upgrade" = "$1" ] && dpkg --compare-versions "$2" lt 0.2+2019.05.21.git.44a55796ba-3; then
+    dpkg-divert --package opentmpfiles --remove --rename \
+        --divert /bin/systemd-tmpfiles.real /bin/systemd-tmpfiles
 fi
 
 #DEBHELPER#

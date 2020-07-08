@@ -2,10 +2,6 @@
 
 set -e
 
-if [ "$1" = "configure" ] ; then
-	update-alternatives --install /bin/tmpfiles tmpfiles /bin/opentmpfiles-tmpfiles 400
-fi
-
 #DEBHELPER#
 
 exit 0

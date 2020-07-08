@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+if [ upgrade = "$1" ] && dpkg --compare-versions "$2" lt 0.2+2019.05.21.git.44a55796ba-3; then
+	update-alternatives --remove-all tmpfiles
+fi
+
+if [ upgrade != "$1" ] || dpkg --compare-versions "$2" lt 0.2+2019.05.21.git.44a55796ba-3; then
+    dpkg-divert --package opentmpfiles --add --rename \
+        --divert /bin/systemd-tmpfiles.real /bin/systemd-tmpfiles
+fi
+
+#DEBHELPER#
+
+exit 0
